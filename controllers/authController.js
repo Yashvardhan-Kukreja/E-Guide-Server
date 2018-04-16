@@ -2,7 +2,7 @@
  * Created by Yash 1300 on 16-04-2018.
  */
 
-const Promise = require('bluebird')
+const Promise = require('bluebird');
 
 const StudentTransactions = require('../models/student/studentTransactions');
 const TeacherTransactions = require('../models/teacher/teacherTransactions');
