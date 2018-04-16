@@ -1,3 +1,44 @@
 /**
  * Created by Yash 1300 on 16-04-2018.
  */
+
+const mongoose = require('mongoose');
+
+const teacherSchema = new mongoose.Schema({
+    name: {
+        type: String,
+        required: true
+    },
+    username: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    email: {
+        type: String,
+        required: true,
+        unique: true,
+        lowercase: true
+    },
+    password: {
+        type: String,
+        required: true
+    },
+    contact: {
+        type: String,
+        required: true
+    },
+    students: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Student'
+        }
+    ],
+    skills: [
+        {
+            type: Number
+        }
+    ]
+});
+
+module.exports = mongoose.model('Teacher', teacherSchema, "teachers");
