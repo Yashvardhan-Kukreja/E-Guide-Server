@@ -1,3 +1,90 @@
 /**
  * Created by Yash 1300 on 16-04-2018.
  */
+
+const Promise = require('bluebird')
+
+const StudentTransactions = require('../models/student/studentTransactions');
+const TeacherTransactions = require('../models/teacher/teacherTransactions');
+
+const SECRET = process.env.SECRET;
+
+module.exports.registerStudent = (name, username, email, password, contact) => {
+    return new Promise((resolve, reject) => {
+        StudentTransactions.addStudent(name, username, email, password, contact, (err) => {
+            if (err) {
+                console.log(err);
+                if (err.code === 11000)
+                    reject({success: false, message: "A user already exists with the same details"});
+                else
+                    reject({success: false, message: "An error occurred"});
+            } else {
+                resolve({success: true, message: "Registered Successfully"});
+            }
+        });
+    });
+};
+
+module.exports.registerTeacher = (name, username, email, password, contact, skills) => {
+    return new Promise((resolve, reject) => {
+        TeacherTransactions.addTeacher(name, username, email, password, contact, skills, (err) => {
+            if (err) {
+                console.log(err);
+                if (err.code === 11000)
+                    reject({success: false, message: "A user already exists with the same details"});
+                else
+                    reject({success: false, message: "An error occurred"});
+            } else {
+                resolve({success: true, message: "Registered Successfully"});
+            }
+        });
+    });
+};
+
+module.exports.loginStudent = (input, password) => {
+    return new Promise((resolve, reject) => {
+        // TODO: change the next line by adding .exec((err, outputStudent) => {...}) at the end of it
+        StudentTransactions.findStudentByUsernameOrEmail(input, (err, outputStudent) => {
+            if (err) {
+                console.log(err);
+                reject({success: false, message: "An error occurred"});
+            } else {
+                if (!outputStudent)
+                    reject({success: false, message: "No such user exists"});
+                else {
+                    let correctPassword = StudentTransactions.verifyPassword(outputStudent, password);
+                    if (!correctPassword)
+                        reject({success: false, message: "Wrong password entered"});
+                    else {
+                        let token = StudentTransactions.generateToken(outputStudent, SECRET);
+                        resolve({success: true, message: "Logged in successfully", token: token});
+                    }
+                }
+            }
+        });
+    });
+};
+
+module.exports.loginTeacher = (input, password) => {
+    return new Promise((resolve, reject) => {
+        // TODO: change the next line by adding .exec((err, outputTeacher) => {...}) at the end of it
+        TeacherTransactions.findTeacherByUsernameOrEmail(input, (err, outputTeacher) => {
+            if (err) {
+                console.log(err);
+                reject({success: false, message: "An error occurred"});
+            } else {
+                if (!outputTeacher)
+                    reject({success: false, message: "No such user exists"});
+                else {
+                    let correctPassword = TeacherTransactions.verifyPassword(outputTeacher, password);
+                    if (!correctPassword)
+                        reject({success: false, message: "Wrong password entered"});
+                    else {
+                        let token = TeacherTransactions.generateToken(outputTeacher, SECRET);
+                        resolve({success: true, message: "Logged in successfully", token: token});
+                    }
+                }
+            }
+        });
+    });
+};
