@@ -35,8 +35,8 @@ module.exports.addStudent = (name, username, email, password, contact, next) => 
     });
 };
 
-module.exports.verifyPassword = (student, passwordInput) => {
-    return bcrypt.compareSync(passwordInput, student.password);
+module.exports.verifyPassword = (student, passwordInput, next) => {
+    bcrypt.compare(passwordInput, student.password, (err, correctPassword) => err ? next(err, null) : next(null, correctPassword));
 };
 
 module.exports.generateToken = (student, secret) => {

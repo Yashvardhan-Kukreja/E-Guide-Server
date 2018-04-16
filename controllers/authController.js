@@ -52,13 +52,14 @@ module.exports.loginStudent = (input, password) => {
                 if (!outputStudent)
                     reject({success: false, message: "No such user exists"});
                 else {
-                    let correctPassword = StudentTransactions.verifyPassword(outputStudent, password);
-                    if (!correctPassword)
-                        reject({success: false, message: "Wrong password entered"});
-                    else {
-                        let token = StudentTransactions.generateToken(outputStudent, SECRET);
-                        resolve({success: true, message: "Logged in successfully", token: token});
-                    }
+                    StudentTransactions.verifyPassword(outputStudent, password, (err, correctPassword) => {
+                        if (!correctPassword)
+                            reject({success: false, message: "Wrong password entered"});
+                        else {
+                            let token = StudentTransactions.generateToken(outputStudent, SECRET);
+                            resolve({success: true, message: "Logged in successfully", token: token});
+                        }
+                    });
                 }
             }
         });
@@ -76,13 +77,14 @@ module.exports.loginTeacher = (input, password) => {
                 if (!outputTeacher)
                     reject({success: false, message: "No such user exists"});
                 else {
-                    let correctPassword = TeacherTransactions.verifyPassword(outputTeacher, password);
-                    if (!correctPassword)
-                        reject({success: false, message: "Wrong password entered"});
-                    else {
-                        let token = TeacherTransactions.generateToken(outputTeacher, SECRET);
-                        resolve({success: true, message: "Logged in successfully", token: token});
-                    }
+                    TeacherTransactions.verifyPassword(outputTeacher, password, (err, correctPassword) => {
+                        if (!correctPassword)
+                            reject({success: false, message: "Wrong password entered"});
+                        else {
+                            let token = TeacherTransactions.generateToken(outputTeacher, SECRET);
+                            resolve({success: true, message: "Logged in successfully", token: token});
+                        }
+                    });
                 }
             }
         });
