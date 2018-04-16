@@ -24,7 +24,7 @@ mongoose.connect(DB).exec(err => {
     else {
 
         // Attaching body parser for reading request bodies
-        app.use(bodyParser.json())
+        app.use(bodyParser.json());
         app.use(bodyParser.urlencoded({extended: true}));
 
         // Attaching a logger to the project
