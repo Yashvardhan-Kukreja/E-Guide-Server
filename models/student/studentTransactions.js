@@ -7,11 +7,11 @@ const bcrypt = require('bcrypt-nodejs');
 const jwt = require('jsonwebtoken');
 
 module.exports.findStudentByUsernameOrEmail = (input, next) => {
-    Student.findOne({$or:[{username: input}, {email: input}]}).exec(next);
+    Student.findOne({$or:[{username: input}, {email: input}]}).populate('Teacher').exec(next);
 };
 
 module.exports.findStudentById = (id, next) => {
-    Student.findOne({_id: id}, {_id: 0, password: 0}).exec(next);
+    Student.findOne({_id: id}, {_id: 0, password: 0}).populate('Teacher').exec(next);
 };
 
 module.exports.addStudent = (name, username, email, password, contact, next) => {
@@ -41,4 +41,8 @@ module.exports.verifyPassword = (student, passwordInput, next) => {
 
 module.exports.generateToken = (student, secret) => {
     return jwt.sign(JSON.parse(JSON.stringify(student)), secret);
+};
+
+module.exports.appendFavTeacher = (studentId, teacherId, next) => {
+    Student.findOneAndUpdate({_id: studentId}, {$push: {favTeachers: teacherId}}).exec(next);
 };

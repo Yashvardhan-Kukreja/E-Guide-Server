@@ -43,3 +43,11 @@ module.exports.verifyPassword = (teacher, passwordInput, next) => {
 module.exports.generateToken = (teacher, secret) => {
     return jwt.sign(JSON.parse(JSON.stringify(teacher)), secret);
 };
+
+module.exports.appendStudent = (studentId, teacherId, next) => {
+    Teacher.findOneAndUpdate({_id: teacherId}, {$push: {students: studentId}}).exec(next);
+};
+
+module.exports.addSkill = (teacherId, skill, next) => {
+    Teacher.findOneAndUpdate({_id: teacherId}, {$push: {skills: skill}}).exec(next);
+};
