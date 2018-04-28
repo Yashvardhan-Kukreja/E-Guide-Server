@@ -3,6 +3,7 @@
  */
 
 const StudentTransactions = require('../models/student/studentTransactions');
+const TeacherTransactions = require('../models/teacher/teacherTransactions');
 const jwt = require('jsonwebtoken');
 const Promise = require('bluebird');
 
@@ -29,6 +30,50 @@ module.exports.fetchDetails = (id) => {
                 reject({success: false, message: "An error occurred"});
             else {
                 outputStudent ? resolve({success: true, message: "Students details fetched", student: outputStudent}) : reject({success: false, message: "No such student found"});
+            }
+        });
+    });
+};
+
+module.exports.favorTeacher = (studentId, teacherId) => {
+    return new Promise((resolve, reject) => {
+        StudentTransactions.appendFavTeacher(studentId, teacherId, (err, outputStudent) => {
+            if (err) {
+                console.log(err);
+                reject({success: false, message: "An error occurred"});
+            } else {
+                if (!outputStudent)
+                    reject({success: false, message: "No student corresponding to this id"});
+                else {
+                    TeacherTransactions.appendStudent(studentId, teacherId, (err, outputTeacher) => {
+                        if (err) {
+                            console.log(err);
+                            reject({success: false, message: "An error occurred"});
+                        } else {
+                            if (!outputTeacher)
+                                reject({success: false, message: "No teacher found corresponding to this id"});
+                            else {
+                                resolve({success: true, message: "Teacher added to favorites"});
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    });
+};
+
+module.exports.fetchFavTeachers = (studentId) => {
+    return new Promise((resolve, reject) => {
+        StudentTransactions.findStudentById(studentId, (err, outputStudent) => {
+            if (err) {
+                console.log(err);
+                reject({success: false, message: "An error occurred"});
+            } else {
+                if (!outputStudent)
+                    reject({success: false, message: "No student found with this id"});
+                else
+                    resolve({success: true, message: "Successfully fetched favorite teachers", favTeachers: outputStudent.favTeachers});
             }
         });
     });
