@@ -50,11 +50,7 @@ module.exports.favorTeacher = (studentId, teacherId) => {
                             console.log(err);
                             reject({success: false, message: "An error occurred"});
                         } else {
-                            if (!outputTeacher)
-                                reject({success: false, message: "No teacher found corresponding to this id"});
-                            else {
-                                resolve({success: true, message: "Teacher added to favorites"});
-                            }
+                            outputTeacher ? resolve({success: true, message: "Teacher added to favorites"}) : reject({success: false, message: "No teacher found corresponding to this id"});
                         }
                     });
                 }
@@ -70,10 +66,7 @@ module.exports.fetchFavTeachers = (studentId) => {
                 console.log(err);
                 reject({success: false, message: "An error occurred"});
             } else {
-                if (!outputStudent)
-                    reject({success: false, message: "No student found with this id"});
-                else
-                    resolve({success: true, message: "Successfully fetched favorite teachers", favTeachers: outputStudent.favTeachers});
+                outputStudent ? resolve({success: true, message: "Successfully fetched favorite teachers", favTeachers: outputStudent.favTeachers}) : reject({success: false, message: "No student found with this id"});
             }
         });
     });
