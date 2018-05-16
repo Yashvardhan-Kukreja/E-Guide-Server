@@ -14,14 +14,13 @@ module.exports.findTeacherById = (id, next) => {
     Teacher.findOne({_id: id}, {_id: 0, password: 0}).exec(next);
 };
 
-module.exports.addTeacher = (name, username, email, password, contact, skills, next) => {
+module.exports.addTeacher = (name, username, email, password, contact, next) => {
     let newTeacher = new Teacher({
         name: name,
         username: username,
         email: email,
         password: password,
-        contact: contact,
-        skills: skills
+        contact: contact
     });
 
     bcrypt.genSalt(10, (err, salt) => {
@@ -48,6 +47,6 @@ module.exports.appendStudent = (studentId, teacherId, next) => {
     Teacher.findOneAndUpdate({_id: teacherId}, {$push: {students: studentId}}).exec(next);
 };
 
-module.exports.addSkill = (teacherId, skill, next) => {
-    Teacher.findOneAndUpdate({_id: teacherId}, {$push: {skills: skill}}).exec(next);
+module.exports.addSkills = (teacherId, skills, next) => {
+    Teacher.findOneAndUpdate({_id: teacherId}, {$addToSet: {skills: {$each: skills}}}).exec(next);
 };
