@@ -29,9 +29,8 @@ router.post('/teacher/register', (req, res) => {
     let email = req.body.email;
     let password = req.body.password;
     let contact = req.body.contact;
-    let skills = (req.body.skills).split(" "); // the input for skills will be like "1 3 5 6 8". Here, each number corresponds to some skill which will be added in the database. This is done for the purpose of testing because while testing through Postman, it is not possible to pass a body value as parameter where the content type of the body is 'x-www-form-urlencoded'
 
-    authController.registerTeacher(name, username, email, password, contact, skills).then(data => {
+    authController.registerTeacher(name, username, email, password, contact).then(data => {
         res.json(data);
     }).catch(err => {
         res.json(err);

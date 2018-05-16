@@ -25,9 +25,9 @@ module.exports.registerStudent = (name, username, email, password, contact) => {
     });
 };
 
-module.exports.registerTeacher = (name, username, email, password, contact, skills) => {
+module.exports.registerTeacher = (name, username, email, password, contact) => {
     return new Promise((resolve, reject) => {
-        TeacherTransactions.addTeacher(name, username, email, password, contact, skills, (err) => {
+        TeacherTransactions.addTeacher(name, username, email, password, contact, (err) => {
             if (err) {
                 console.log(err);
                 if (err.code === 11000)
