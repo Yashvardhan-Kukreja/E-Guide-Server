@@ -36,7 +36,8 @@ const teacherSchema = new mongoose.Schema({
     ],
     skills: [
         {
-            type: Number
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Skill'
         }
     ]
 });

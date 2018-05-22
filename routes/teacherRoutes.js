@@ -26,4 +26,9 @@ router.post('/addSkills', (req, res) => {
 
     TeacherController.addSkills(req.decoded._id, skills).then(data => res.json(data)).catch(err => res.json(err));
 });
+
+router.post('/fetchFavStudents', (req, res) => {
+
+});
+
 module.exports = router;
