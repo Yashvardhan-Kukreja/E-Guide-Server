@@ -6,7 +6,12 @@ const Promise = require('bluebird');
 
 const StudentTransactions = require('../database/student/studentTransactions');
 const TeacherTransactions = require('../database/teacher/teacherTransactions');
-const config = require('../config');
+
+try {
+    var config = require('../config');
+} catch (e) {
+    console.log("Unable to access config variables");
+}
 
 const SECRET = process.env.SECRET || config.SECRET;
 

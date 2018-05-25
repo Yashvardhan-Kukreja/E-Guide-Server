@@ -12,7 +12,12 @@ const bodyParser = require('body-parser');
 const authRouter = require('./routes/authRoutes');
 const studentRouter = require('./routes/studentRoutes');
 const teacherRouter = require('./routes/teacherRoutes');
-const config = require('./config');
+
+try {
+    var config = require('./config');
+} catch (e) {
+    console.log("Unable to access config variables");
+}
 
 const DB = process.env.DB || config.DB;
 const port = process.env.PORT || 8000;
