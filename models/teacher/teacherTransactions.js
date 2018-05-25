@@ -11,7 +11,7 @@ module.exports.findTeacherByUsernameOrEmail = (input, next) => {
 };
 
 module.exports.findTeacherById = (id, next) => {
-    Teacher.findOne({_id: id}, {_id: 0, password: 0}).populate([{path: 'students', model: 'Student'}, {path: 'skills', model: 'Skill'}]).exec(next);
+    Teacher.findOne({_id: id}, {_id: 0, password: 0}).populate([{path: 'students', model: 'Favorite'}, {path: 'skills', model: 'Skill'}]).exec(next);
 };
 
 module.exports.addTeacher = (name, username, email, password, contact, next) => {
@@ -43,8 +43,8 @@ module.exports.generateToken = (teacher, secret) => {
     return jwt.sign(JSON.parse(JSON.stringify(teacher)), secret);
 };
 
-module.exports.appendStudent = (studentId, teacherId, next) => {
-    Teacher.findOneAndUpdate({_id: teacherId}, {$push: {students: studentId}}).exec(next);
+module.exports.appendStudent = (favoriteId, teacherId, next) => {
+    Teacher.findOneAndUpdate({_id: teacherId}, {$addToSet: {students: favoriteId}}).exec(next);
 };
 
 module.exports.addSkills = (teacherId, skills, next) => {
