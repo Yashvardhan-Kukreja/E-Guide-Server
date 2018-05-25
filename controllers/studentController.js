@@ -4,6 +4,8 @@
 
 const StudentTransactions = require('../models/student/studentTransactions');
 const TeacherTransactions = require('../models/teacher/teacherTransactions');
+const FavoriteTransactions = require('../models/favorite/favoriteTransactions');
+
 const jwt = require('jsonwebtoken');
 const Promise = require('bluebird');
 
@@ -35,29 +37,46 @@ module.exports.fetchDetails = (id) => {
     });
 };
 
-module.exports.favorTeacher = (studentId, teacherId) => {
+module.exports.favorTeacher = (studentId, teacherId, skillId) => {
     return new Promise((resolve, reject) => {
-        StudentTransactions.appendFavTeacher(studentId, teacherId, (err, outputStudent) => {
+        FavoriteTransactions.addFavorite(studentId, teacherId, skillId, (err, outputFavorite) => {
             if (err) {
                 console.log(err);
                 reject({success: false, message: "An error occurred"});
             } else {
-                if (!outputStudent)
-                    reject({success: false, message: "No student corresponding to this id"});
-                else {
-                    TeacherTransactions.appendStudent(studentId, teacherId, (err, outputTeacher) => {
-                        if (err) {
-                            console.log(err);
-                            reject({success: false, message: "An error occurred"});
-                        } else {
-                            outputTeacher ? resolve({success: true, message: "Teacher added to favorites"}) : reject({success: false, message: "No teacher found corresponding to this id"});
+                let favoriteId = outputFavorite._id;
+                StudentTransactions.appendFavTeacher(studentId, favoriteId, (err, outputStudent) => {
+                    if (err) {
+                        console.log(err);
+                        reject({success: false, message: "An error occurred"});
+                    } else {
+                        if (!outputStudent)
+                            reject({success: false, message: "No student corresponding to this id"});
+                        else {
+                            TeacherTransactions.appendStudent(studentId, teacherId, (err, outputTeacher) => {
+                                if (err) {
+                                    console.log(err);
+                                    reject({success: false, message: "An error occurred"});
+                                } else {
+                                    outputTeacher ? resolve({success: true, message: "Teacher added to favorites"}) : reject({success: false, message: "No teacher found corresponding to this id"});
+                                }
+                            });
                         }
-                    });
-                }
+                    }
+                });
             }
         });
     });
 };
+
+module.exports.unfavorTeacher = (studentId, teacherId, skillId) => {
+    return new Promise((resolve, reject) => {
+        FavoriteTransactions.removeFavorite(studentId, teacherId, skillId).exec(err => {
+            err ? reject({success: false, message: "Problem occurred while removing the teacher from favorites"}) : resolve({success: true, message: "Removed the teacher from favorites"});
+        });
+    });
+};
+
 
 module.exports.fetchFavTeachers = (studentId) => {
     return new Promise((resolve, reject) => {
