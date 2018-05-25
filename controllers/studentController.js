@@ -2,9 +2,9 @@
  * Created by Yash 1300 on 16-04-2018.
  */
 
-const StudentTransactions = require('../models/student/studentTransactions');
-const TeacherTransactions = require('../models/teacher/teacherTransactions');
-const FavoriteTransactions = require('../models/favorite/favoriteTransactions');
+const StudentTransactions = require('../database/student/studentTransactions');
+const TeacherTransactions = require('../database/teacher/teacherTransactions');
+const FavoriteTransactions = require('../database/favorite/favoriteTransactions');
 
 const jwt = require('jsonwebtoken');
 const Promise = require('bluebird');

@@ -4,8 +4,8 @@
 
 const Promise = require('bluebird');
 
-const StudentTransactions = require('../models/student/studentTransactions');
-const TeacherTransactions = require('../models/teacher/teacherTransactions');
+const StudentTransactions = require('../database/student/studentTransactions');
+const TeacherTransactions = require('../database/teacher/teacherTransactions');
 const config = require('../config');
 
 const SECRET = process.env.SECRET || config.SECRET;
