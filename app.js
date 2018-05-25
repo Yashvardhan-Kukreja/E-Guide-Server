@@ -18,10 +18,11 @@ const port = process.env.PORT || 8000;
 const app = express();
 
 // Setting up connection to the database
-mongoose.connect(DB).exec(err => {
+mongoose.connect(DB, err => {
     if (err)
         console.log("Error occurred while connecting to the database ! ");
     else {
+        console.log("Connection established to the database...");
 
         // Attaching body parser for reading request bodies
         app.use(bodyParser.json());
