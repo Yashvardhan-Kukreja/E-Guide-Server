@@ -23,8 +23,12 @@ router.get('/fetchDetails', (req, res) => {
 // Adding skills to the teacher
 router.post('/addSkills', (req, res) => {
     let skills = (req.body.skills).split(" ");
-
     TeacherController.addSkills(req.decoded._id, skills).then(data => res.json(data)).catch(err => res.json(err));
+});
+
+// Fetch the list of all the skills
+router.get('/fetchAllSkills', (req, res) => {
+    TeacherController.fetchAllSkills().then(data => res.json(data)).catch(err => res.json(err));
 });
 
 router.post('/fetchFavStudents', (req, res) => {
