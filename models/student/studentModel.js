@@ -31,7 +31,7 @@ const studentSchema = new mongoose.Schema({
     favTeachers: [
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'Teacher'
+            ref: 'Favorite'
         }
     ]
 });
