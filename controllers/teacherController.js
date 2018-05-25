@@ -3,6 +3,8 @@
  */
 
 const TeacherTransactions = require('../database/teacher/teacherTransactions');
+const SkillTransactions = require('../database/skill/skillTransactions');
+
 const jwt = require('jsonwebtoken');
 const Promise = require('bluebird');
 
@@ -39,6 +41,19 @@ module.exports.addSkills = (id, skills) => {
                 reject({success: false, message: "An error occurred"});
             } else {
                 outputTeacher ? resolve({success: true, message: "Updated the skill set", teacher: outputTeacher}) : reject({success: false, message: "No such teacher found"});
+            }
+        });
+    });
+};
+
+module.exports.fetchAllSkills = () => {
+    return new Promise((resolve, reject) => {
+        SkillTransactions.fetchAllSkills((err, outputSkills) => {
+            if (err) {
+                console.log("An error occurred");
+                reject({success: false, message: "An error occurred"});
+            } else {
+                outputSkills ? resolve({success: true, message: "All skills fetched", skills: outputSkills}) : reject({success: false, message: "An error occurred"});
             }
         });
     });
