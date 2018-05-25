@@ -6,8 +6,9 @@ const Promise = require('bluebird');
 
 const StudentTransactions = require('../models/student/studentTransactions');
 const TeacherTransactions = require('../models/teacher/teacherTransactions');
+const config = require('../config');
 
-const SECRET = process.env.SECRET;
+const SECRET = process.env.SECRET || config.SECRET;
 
 module.exports.registerStudent = (name, username, email, password, contact) => {
     return new Promise((resolve, reject) => {

@@ -12,8 +12,9 @@ const bodyParser = require('body-parser');
 const authRouter = require('./routes/authRoutes');
 const studentRouter = require('./routes/studentRoutes');
 const teacherRouter = require('./routes/teacherRoutes');
+const config = require('./config');
 
-const DB = process.env.DB;
+const DB = process.env.DB || config.DB;
 const port = process.env.PORT || 8000;
 const app = express();
 
