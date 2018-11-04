@@ -11,7 +11,9 @@ const bodyParser = require('body-parser');
 
 const authRouter = require('./routes/authRoutes');
 const studentRouter = require('./routes/studentRoutes');
-const teacherRouter = require('./routes/teacherRoutes');
+const teacherRouter = require('./routes/teacherRoutes').router;
+const teacherRouterUntoken = require('./routes/teacherRoutes').untoken_router;
+const SkillTransactions = require('./database/skill/skillTransactions');
 
 try {
     var config = require('./config');
@@ -46,6 +48,23 @@ mongoose.connect(DB, err => {
         app.use('/authenticate', authRouter);
         app.use('/student', studentRouter);
         app.use('/teacher', teacherRouter);
+        app.use('/untoken/teacher', teacherRouterUntoken);
+
+        app.post('/addskill', (req, res) => {
+            let name = req.body.skill;
+            SkillTransactions.addASkill(name, (err) => {
+                if (err) {
+                    console.error(err);
+                    if (err.code === 11000)
+                        res.json({success: false, message: "A skill already exists with the same name"});
+                    else
+                        res.json({success: false, message: "An error occurred"});
+
+                } else {
+                    res.json({success: true, message: `${name} successfully added as a skill`});
+                }
+            });
+        });
 
         // Setting up the error handler
         app.use((req, res, next) => {
