@@ -46,6 +46,19 @@ module.exports.addSkills = (id, skills) => {
     });
 };
 
+module.exports.addSkillsByEmail = (email, skills) => {
+    return new Promise((resolve, reject) => {
+        TeacherTransactions.addSkillsByEmail(email, skills, (err, outputTeacher) => {
+            if (err) {
+                console.log("An error occurred");
+                reject({success: false, message: "An error occurred"});
+            } else {
+                outputTeacher ? resolve({success: true, message: "Updated the skill set", teacher: outputTeacher}) : reject({success: false, message: "No such teacher found"});
+            }
+        });
+    });
+};
+
 module.exports.fetchAllSkills = () => {
     return new Promise((resolve, reject) => {
         SkillTransactions.fetchAllSkills((err, outputSkills) => {
