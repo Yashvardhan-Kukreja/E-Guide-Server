@@ -4,6 +4,7 @@
 
 const TeacherController = require('../controllers/teacherController');
 const router = require('express').Router();
+const untoken_router = require('express').Router();
 
 const secret = process.env.SECRET;
 
@@ -22,17 +23,29 @@ router.get('/fetchDetails', (req, res) => {
 
 // Adding skills to the teacher
 router.post('/addSkills', (req, res) => {
-    let skills = (req.body.skills).split(" ");
+    let skills = req.body.skills;
     TeacherController.addSkills(req.decoded._id, skills).then(data => res.json(data)).catch(err => res.json(err));
 });
 
+untoken_router.post('/addSkills', (req, res) => {
+    let skills = req.body.skills;
+    let email = req.body.teacher_email;
+    TeacherController.addSkillsByEmail(email, skills).then(data => res.json(data)).catch(err => res.json(err));
+});
+
+
 // Fetch the list of all the skills
-router.get('/fetchAllSkills', (req, res) => {
+untoken_router.get('/fetchAllSkills', (req, res) => {
     TeacherController.fetchAllSkills().then(data => res.json(data)).catch(err => res.json(err));
 });
+
+//Adding skills to the teacher using teacher email
 
 router.post('/fetchFavStudents', (req, res) => {
 
 });
 
-module.exports = router;
+module.exports = {
+    router: router,
+    untoken_router: untoken_router
+};
