@@ -48,5 +48,14 @@ module.exports.appendStudent = (favoriteId, teacherId, next) => {
 };
 
 module.exports.addSkills = (teacherId, skills, next) => {
-    Teacher.findOneAndUpdate({_id: teacherId}, {$addToSet: {skills: {$each: skills}}}).exec(next);
+    Teacher.findOneAndUpdate({_id: teacherId}, {$push: {skills: {$each: skills}}}).exec(next);
 };
+
+module.exports.addSkillsByEmail = (teacherEmail, skills, next) => {
+    Teacher.findOneAndUpdate({email: teacherEmail}, {$push: {skills: {$each: skills}}}).exec(next);
+};
+
+module.exports.addASkill = (teacherId, skill, next) => {
+    Teacher.findOneAndUpdate({_id: teacherId}, {$push: {skills: skill}}).exec(next);
+};
+
