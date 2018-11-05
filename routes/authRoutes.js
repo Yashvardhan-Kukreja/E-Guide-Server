@@ -29,8 +29,9 @@ router.post('/teacher/register', (req, res) => {
     let email = req.body.email;
     let password = req.body.password;
     let contact = req.body.contact;
+    let skills = req.body.skills;
 
-    authController.registerTeacher(name, username, email, password, contact).then(data => {
+    authController.registerTeacher(name, username, email, password, contact, skills).then(data => {
         res.json(data);
     }).catch(err => {
         res.json(err);

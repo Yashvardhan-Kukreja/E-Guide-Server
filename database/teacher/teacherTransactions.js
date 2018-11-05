@@ -14,13 +14,14 @@ module.exports.findTeacherById = (id, next) => {
     Teacher.findOne({_id: id}, {_id: 0, password: 0}).populate([{path: 'students', model: 'Favorite'}, {path: 'skills', model: 'Skill'}]).exec(next);
 };
 
-module.exports.addTeacher = (name, username, email, password, contact, next) => {
+module.exports.addTeacher = (name, username, email, password, contact, skills, next) => {
     let newTeacher = new Teacher({
         name: name,
         username: username,
         email: email,
         password: password,
-        contact: contact
+        contact: contact,
+        skills: skills
     });
 
     bcrypt.genSalt(10, (err, salt) => {
