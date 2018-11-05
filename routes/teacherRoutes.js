@@ -6,12 +6,18 @@ const TeacherController = require('../controllers/teacherController');
 const router = require('express').Router();
 const untoken_router = require('express').Router();
 
-const secret = process.env.SECRET;
+try {
+    var config = require('./config');
+} catch (e) {
+    console.log("Unable to access config variables");
+}
+
+const secret = process.env.SECRET || config.SECRET;
 
 router.use((req, res, next) => {
     let token = req.headers['x-access-token'];
     TeacherController.verifyToken(token, secret).then(data => {
-        req.decoded = data;
+        req.decoded = data.decoded;
         next();
     }).catch(err => res.json(err));
 });

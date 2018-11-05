@@ -74,9 +74,10 @@ mongoose.connect(DB, err => {
         });
         app.use((err, req, res, next) => {
             res.locals.message = err.message;
+            console.log(err);
             res.locals.error = req.app.get('env') === 'development' ? err : {};
             res.status(err.status || 500);
-            res.render('error');
+            res.send('error');
         });
 
         // Starting the server on the specified port

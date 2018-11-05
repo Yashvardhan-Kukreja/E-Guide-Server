@@ -15,7 +15,7 @@ module.exports.verifyToken = (token, secret) => {
                 if (err)
                     reject({success: false, message: "An error occurred"});
                 else
-                    decoded ? resolve(decoded) : reject({success: false, message: "Corrupted token provided"});
+                    decoded ? resolve({success: true, message: "Token decoded successfully", decoded: decoded}) : reject({success: false, message: "Corrupted token provided"});
             });
         } else
             reject({success: false, message: "No token provided"});
