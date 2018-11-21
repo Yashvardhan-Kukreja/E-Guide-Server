@@ -10,8 +10,20 @@ module.exports.findTeacherByUsernameOrEmail = (input, next) => {
     Teacher.findOne({$or:[{username: input}, {email: input}]}).exec(next);
 };
 
+module.exports.findTeacherFromUsernameOrEmail = (inputs, next) => {
+    Teacher.findOne({$or: [ {username: {$in: inputs}}, {email: {$in: inputs}} ]}).exec(next)
+};
+
+module.exports.findTeacherByUsername = (input, next) => {
+    Teacher.findOne({username: input}).exec(next);
+};
+
+module.exports.findTeacherByEmail = (input, next) => {
+    Teacher.findOne({email: input}).exec(next);
+};
+
 module.exports.findTeacherById = (id, next) => {
-    Teacher.findOne({_id: id}, {_id: 0, password: 0}).populate([{path: 'students', model: 'Favorite'}, {path: 'skills', model: 'Skill'}]).exec(next);
+    Teacher.findOne({_id: id}, {_id: 0, password: 0}).populate([{path: 'students', model: 'Favorite', populate: [{path: "favoredByStudent", model: "Student"}, {path: "favoriteTeacher", model: "Teacher"}]}, {path: 'skills', model: 'Skill'}]).exec(next);
 };
 
 module.exports.addTeacher = (name, username, email, password, contact, skills, next) => {
@@ -60,3 +72,6 @@ module.exports.addASkill = (teacherId, skill, next) => {
     Teacher.findOneAndUpdate({_id: teacherId}, {$push: {skills: skill}}).exec(next);
 };
 
+module.exports.fetchAllTeachers = (next) => {
+    Teacher.find({}).populate({path: "skills", model: "Skill"}).exec(next);
+};

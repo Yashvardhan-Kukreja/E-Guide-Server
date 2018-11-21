@@ -96,3 +96,19 @@ module.exports.loginTeacher = (input, password) => {
         });
     });
 };
+
+module.exports.checkTeacherExistense = (email, username) => {
+    return new Promise((resolve, reject) => {
+        TeacherTransactions.findTeacherFromUsernameOrEmail([email, username], (err, outputUser) => {
+            if (err) {
+                console.error(err);
+                reject({success: false, message: "An error occurred"});
+            } else {
+                if (outputUser)
+                    reject({success: false, message: "A teacher found with same email or username!"});
+                else
+                    resolve({success: true, message: "This is a unique teacher"});
+            }
+        });
+    });
+};

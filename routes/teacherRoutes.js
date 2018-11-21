@@ -7,7 +7,7 @@ const router = require('express').Router();
 const untoken_router = require('express').Router();
 
 try {
-    var config = require('./config');
+    var config = require('../config');
 } catch (e) {
     console.log("Unable to access config variables");
 }

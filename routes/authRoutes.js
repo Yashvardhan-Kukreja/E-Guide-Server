@@ -62,5 +62,15 @@ router.post('/teacher/login', (req, res) => {
     });
 });
 
+// Route for checking a teacher's existense
+router.post('/teacher/check', (req, res) => {
+    let email = req.body.email;
+    let username = req.body.username;
+
+    authController.checkTeacherExistense(email, username)
+        .then(data => res.json(data))
+        .catch(err => res.json(err));
+});
+
 module.exports = router;
 
