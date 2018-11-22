@@ -42,7 +42,7 @@ router.get('/favoriteTeachers', (req, res) => {
     StudentController.fetchFavTeachers(student_id).then(data => res.json(data)).catch(err => res.json(err));
 });
 
-router.delete("/unfavorTeacher", (req, res) => {
+router.post("/unfavorTeacher", (req, res) => {
     let student_id = req.decoded._id;
     let teacher_id = req.body.teacher_id;
     let skill_id = req.body.skill_id;
