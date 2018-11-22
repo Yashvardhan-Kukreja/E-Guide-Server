@@ -48,4 +48,9 @@ router.post("/unfavorTeacher", (req, res) => {
     let skill_id = req.body.skill_id;
     StudentController.unfavorTeacher(student_id, teacher_id, skill_id).then(data => res.json(data)).catch(err => res.json(err));
 });
+
+router.post("/unfavorTeacherById", (req, res) => {
+    let fav_id = req.body.fav_id;
+    StudentController.unfavorTeacherById(fav_id).then(data => res.json(data)).catch(err => res.json(err));
+});
 module.exports = router;

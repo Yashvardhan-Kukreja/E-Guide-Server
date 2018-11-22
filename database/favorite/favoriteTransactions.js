@@ -36,10 +36,6 @@ module.exports.addFavorite = (student_id, teacher_id, skill_id, next) => {
     newFavorite.save(next);
 };
 
-module.exports.removeFavorite = (student_id, teacher_id, skill_id, next) => {
-    Favorite.findOneAndDelete({favoredByStudent: student_id, favoriteTeacher: teacher_id, skill: skill_id}).exec(next);
-};
-
 module.exports.findFavoritesForAStudent = (student_id, next) => {
     // TODO: Remove student ids from the next query
     Favorite.find({favoredByStudent: student_id}).populate(searchQuery).exec(next);
@@ -47,4 +43,8 @@ module.exports.findFavoritesForAStudent = (student_id, next) => {
 
 module.exports.findFavoredStudentsOfATeacher = (teacher_id, next) => {
     Favorite.find({favoriteTeacher: teacher_id}).populate(searchQuery).exec(next);
+};
+
+module.exports.removeFavorite = (student_id, teacher_id, skill_id, next) => {
+    Favorite.deleteOne({favoredByStudent: student_id, favoriteTeacher: teacher_id, skill: skill_id}).exec(next);
 };

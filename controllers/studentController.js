@@ -55,12 +55,16 @@ module.exports.favorTeacher = (studentId, teacherId, skillId) => {
 
 module.exports.unfavorTeacher = (studentId, teacherId, skillId) => {
     return new Promise((resolve, reject) => {
-        FavoriteTransactions.removeFavorite(studentId, teacherId, skillId).exec(err => {
-            err ? reject({success: false, message: "Problem occurred while removing the teacher from favorites"}) : resolve({success: true, message: "Removed the teacher from favorites"});
+        FavoriteTransactions.removeFavorite(studentId, teacherId, skillId, err => {
+            if (err) {
+                console.error(err);
+                reject({success: false, message: "Problem occurred while removing the teacher from favorites"});
+            } else {
+                resolve({success: true, message: "Removed the teacher from favorites"});
+            }
         });
     });
 };
-
 
 module.exports.fetchFavTeachers = (studentId) => {
     return new Promise((resolve, reject) => {
