@@ -4,6 +4,7 @@
 
 const TeacherTransactions = require('../database/teacher/teacherTransactions');
 const SkillTransactions = require('../database/skill/skillTransactions');
+const FavoriteTransactions = require('../database/favorite/favoriteTransactions');
 
 const jwt = require('jsonwebtoken');
 const Promise = require('bluebird');
@@ -67,6 +68,22 @@ module.exports.fetchAllSkills = () => {
                 reject({success: false, message: "An error occurred"});
             } else {
                 outputSkills ? resolve({success: true, message: "All skills fetched", skills: outputSkills}) : reject({success: false, message: "An error occurred"});
+            }
+        });
+    });
+};
+
+module.exports.fetchFavoredStudentsOfATeacher = (teacherId) => {
+    return new Promise((resolve, reject) => {
+        FavoriteTransactions.findFavoredStudentsOfATeacher(teacherId, (err, output) => {
+            if (err) {
+                console.error(err);
+                reject({success: false, message: "An error occurred"});
+            } else {
+                if (!output)
+                    reject({success: false, message: "No students favored till now!"});
+                else
+                    resolve({success: true, message: "Fetched the favored students successfully", favStudents: output});
             }
         });
     });

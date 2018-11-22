@@ -42,31 +42,12 @@ module.exports.fetchDetails = (id) => {
 
 module.exports.favorTeacher = (studentId, teacherId, skillId) => {
     return new Promise((resolve, reject) => {
-        FavoriteTransactions.addFavorite(studentId, teacherId, skillId, (err, outputFavorite) => {
+        FavoriteTransactions.addFavorite(studentId, teacherId, skillId, (err) => {
             if (err) {
                 console.log(err);
                 reject({success: false, message: "A same favorite already found"});
             } else {
-                let favoriteId = outputFavorite._id;
-                StudentTransactions.appendFavTeacher(studentId, favoriteId, (err, outputStudent) => {
-                    if (err) {
-                        console.log(err);
-                        reject({success: false, message: "An error occurred"});
-                    } else {
-                        if (!outputStudent)
-                            reject({success: false, message: "No student corresponding to this id"});
-                        else {
-                            TeacherTransactions.appendStudent(favoriteId, teacherId, (err, outputTeacher) => {
-                                if (err) {
-                                    console.log(err);
-                                    reject({success: false, message: "An error occurred"});
-                                } else {
-                                    outputTeacher ? resolve({success: true, message: "Teacher added to favorites"}) : reject({success: false, message: "No teacher found corresponding to this id"});
-                                }
-                            });
-                        }
-                    }
-                });
+                resolve({success: true, message: "Teacher added to favorites"});
             }
         });
     });
@@ -83,12 +64,16 @@ module.exports.unfavorTeacher = (studentId, teacherId, skillId) => {
 
 module.exports.fetchFavTeachers = (studentId) => {
     return new Promise((resolve, reject) => {
-        StudentTransactions.findStudentById(studentId, (err, outputStudent) => {
+        FavoriteTransactions.findFavoritesForAStudent(studentId, (err, output) => {
             if (err) {
-                console.log(err);
+                console.error(err);
                 reject({success: false, message: "An error occurred"});
             } else {
-                outputStudent ? resolve({success: true, message: "Successfully fetched favorite teachers", favTeachers: outputStudent.favTeachers}) : reject({success: false, message: "No student found with this id"});
+                if (!output)
+                    reject({success: false, message: "An error occurred"});
+                else
+                    resolve({success: true, message: "Favorite teachers fetched successfully", favTeachers: output});
+                // resolve({success: true, message: "Favorite teachers fetched successfully", favTeachers: {"favoredByStudent": output.favoredByStudent, "skill": output.skill, "_id": output._id}});
             }
         });
     });

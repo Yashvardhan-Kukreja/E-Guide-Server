@@ -11,7 +11,11 @@ const searchQuery = [
     },
     {
         path: 'favoriteTeacher',
-        model: 'Teacher'
+        model: 'Teacher',
+        populate: {
+            path: 'skills',
+            model: 'Skill'
+        }
     },
     {
         path: 'skill',

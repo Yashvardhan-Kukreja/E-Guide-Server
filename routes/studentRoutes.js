@@ -37,4 +37,8 @@ router.post('/favorTeacher', (req, res) => {
     StudentController.favorTeacher(student_id, teacher_id, skill_id).then(data => res.json(data)).catch(err => res.json(err));
 });
 
+router.get('/favoriteTeachers', (req, res) => {
+    let student_id = req.decoded._id;
+    StudentController.fetchFavTeachers(student_id).then(data => res.json(data)).catch(err => res.json(err));
+});
 module.exports = router;

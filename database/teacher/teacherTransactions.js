@@ -23,7 +23,7 @@ module.exports.findTeacherByEmail = (input, next) => {
 };
 
 module.exports.findTeacherById = (id, next) => {
-    Teacher.findOne({_id: id}, {_id: 0, password: 0}).populate([{path: 'students', model: 'Favorite', populate: [{path: "favoredByStudent", model: "Student"}, {path: "favoriteTeacher", model: "Teacher"}]}, {path: 'skills', model: 'Skill'}]).exec(next);
+    Teacher.findOne({_id: id}, {_id: 0, password: 0}).populate([{path: 'skills', model: 'Skill'}]).exec(next);
 };
 
 module.exports.addTeacher = (name, username, email, password, contact, skills, next) => {

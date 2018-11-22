@@ -27,13 +27,7 @@ const studentSchema = new mongoose.Schema({
     contact: {
         type: String,
         required: true
-    },
-    favTeachers: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Favorite'
-        }
-    ]
+    }
 });
 
 module.exports = mongoose.model('Student', studentSchema, "students");

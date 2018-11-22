@@ -47,8 +47,9 @@ untoken_router.get('/fetchAllSkills', (req, res) => {
 
 //Adding skills to the teacher using teacher email
 
-router.post('/fetchFavStudents', (req, res) => {
-
+router.get('/fetchFavStudents', (req, res) => {
+    let teacher_id = req.decoded._id;
+    TeacherController.fetchFavoredStudentsOfATeacher(teacher_id).then(data => res.json(data)).catch(err => res.json(err));
 });
 
 module.exports = {
