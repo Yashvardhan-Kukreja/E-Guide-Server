@@ -73,7 +73,6 @@ module.exports.fetchFavTeachers = (studentId) => {
                     reject({success: false, message: "An error occurred"});
                 else
                     resolve({success: true, message: "Favorite teachers fetched successfully", favTeachers: output});
-                // resolve({success: true, message: "Favorite teachers fetched successfully", favTeachers: {"favoredByStudent": output.favoredByStudent, "skill": output.skill, "_id": output._id}});
             }
         });
     });
